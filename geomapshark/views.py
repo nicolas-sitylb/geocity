@@ -1,7 +1,7 @@
 from django.conf import settings
 from constance import config
 from urllib import parse
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordResetView
 
@@ -15,6 +15,20 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
 from permits import forms, models
+
+
+def logout_view(request):
+    templatename = (
+        request.session.pop("templatename")
+        if "templatename" in request.session
+        else None
+    )
+    logout(request)
+    return redirect(
+        f'{reverse("login")}?template={templatename}'
+        if templatename
+        else reverse("login")
+    )
 
 
 class CustomPasswordResetView(PasswordResetView):
@@ -46,6 +60,7 @@ class CustomLoginView(LoginView):
         }
         uri = parse.unquote(self.request.build_absolute_uri()).replace("next=/", "")
         params_str = parse.urlsplit(uri).query.replace("?", "")
+        self.request.session["templatename"] = None
         if "template" in parse.parse_qs(params_str).keys():
             template = models.TemplateCustomization.objects.filter(
                 templatename=parse.parse_qs(params_str)["template"][0]
@@ -65,6 +80,7 @@ class CustomLoginView(LoginView):
                     if template.background_image
                     else None,
                 }
+                self.request.session["templatename"] = template.templatename
 
         context.update({"customization": customization})
         return context
