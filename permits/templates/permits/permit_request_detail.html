@@ -20,16 +20,18 @@
   <div class="col-md-4">
 
     <div class="row floating-elem">
-      <h1>
-        {% blocktrans with request_id=permit_request.pk %}
-          Demande #{{ request_id }}
-        {% endblocktrans %}
-        {% if permit_request.is_public %}
-          <span class="badge badge-pill badge-success">Publique</span>
-        {% else %}
-          <span class="badge badge-pill badge-danger">Privée</span>
-        {% endif %}
-      </h1>
+      {% if not forms.amend and not forms.request_validation and not forms.validate and not forms.poke %}
+        <h1>
+          {% blocktrans with request_id=permit_request.pk %}
+            Demande #{{ request_id }}
+          {% endblocktrans %}
+          {% if permit_request.is_public %}
+            <span class="badge badge-pill badge-success">Publique</span>
+          {% else %}
+            <span class="badge badge-pill badge-danger">Privée</span>
+          {% endif %}
+        </h1>
+      {% endif %}
 
       <div class="col">
         <dl>

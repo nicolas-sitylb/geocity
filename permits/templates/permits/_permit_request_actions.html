@@ -5,11 +5,16 @@
 
 <div class="container">
   {% if forms.amend or forms.request_validation or forms.validate or forms.poke %}
-  <h2>
+  <h1>
     {% blocktrans with request_id=permit_request.pk %}
-      Boîte à outils
+      Demande #{{ request_id }}
     {% endblocktrans %}
-  </h2>
+    {% if permit_request.is_public %}
+      <span class="badge badge-pill badge-success">Publique</span>
+    {% else %}
+      <span class="badge badge-pill badge-danger">Privée</span>
+    {% endif %}
+  </h1>
   <h2>{% trans "" %}</h2>
   <div class="row">
     <div class="col">
