@@ -1211,7 +1211,7 @@ class PermitRequestValidationForm(forms.ModelForm):
                 value,
                 label
                 if value != models.PermitRequestValidation.STATUS_REQUESTED
-                else "-" * 9,
+                else "- " * 8,
             )
             for value, label in self.fields["validation_status"].choices
         ]
