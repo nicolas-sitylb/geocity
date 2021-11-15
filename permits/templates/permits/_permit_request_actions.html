@@ -1,8 +1,15 @@
 {% load i18n %}
 {% load bootstrap4 %}
 
+
+
 <div class="container">
   {% if forms.amend or forms.request_validation or forms.validate or forms.poke %}
+  <h2>
+    {% blocktrans with request_id=permit_request.pk %}
+      Boîte à outils
+    {% endblocktrans %}
+  </h2>
   <h2>{% trans "" %}</h2>
   <div class="row">
     <div class="col">
@@ -79,10 +86,10 @@
 
               {% for object_type, fields in forms.amend.get_fields_by_object_type %}
               {% if fields %}
-                  <h4 class="my-5">{{ object_type }}</h4>
-                  {% for field in fields %}
-                  {% bootstrap_field field layout='horizontal'%}
-                  {% endfor %}
+                <h4 class="my-5">{{ object_type }}</h4>
+                {% for field in fields %}
+                {% bootstrap_field field layout='horizontal'%}
+                {% endfor %}
               {% endif %}
               {% endfor %}
 
@@ -111,7 +118,7 @@
         {% endif %}
 
         {% if forms.validate %}
-          <div class="tab-pane{% if active_form == "validate" %} show active{% endif  %}" id="validate" role="tabpanel" aria-labelledby="validate-tab">
+          <div class="tab-pane{% if active_form == "validate" %} show active{% endif %}" id="validate" role="tabpanel" aria-labelledby="validate-tab">
             <form method="post">
               {% csrf_token %}
 
@@ -119,7 +126,7 @@
 
               <div class="text-right">
                 <input name="action" type="hidden" value="validate">
-                <button class="btn btn-primary" {% if forms.validate.disabled %}disabled{% endif %}>{% trans "Valider" %}</button>
+                <button class="btn btn-primary" {% if forms.validate.disabled %}disabled{% endif %}>{% trans "Envoyer" %}</button>
               </div>
             </form>
           </div>
