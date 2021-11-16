@@ -72,7 +72,19 @@
                     <div class="grid-element">
                       </dl>
                          <dt> {{ field_label }} </dt>
-                         <dd> {{ field_value }} </dd>
+                        {% if 'email' in field_label %}
+                          <dd>
+                            <a href="mailto:{{ field_value }}" target="_blank" rel="noreferrer">
+                              {{ field_value }}
+                            </a>
+                          </dd>
+                        {% elif 'phone' in field_label %}
+                          <a href="tel:{{ field_value }}">
+                            {{ field_value }}
+                          </a>
+                        {% else %}
+                          <dd> {{ field_value }} </dd>
+                        {% endif %}
                       </dl>
                     </div>
                     {% endif %}
